@@ -9,6 +9,7 @@ import 'package:untitled1/services/auth.dart';
 import 'package:untitled1/models/user.dart';
 import 'package:untitled1/screens/wrapper.dart';
 import 'screens/authentication/forgotpassword.dart';
+import 'models/components.dart';
 
 Color topcolor = Colors.red, bottomColor = Colors.red;
 
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
         home: Wrapper(),
         routes: {
           'forgot_password': (context) => ForgotPassWord(),
+          'qr_scan': (context) => QRViewExample(),
         },
       ),
     );

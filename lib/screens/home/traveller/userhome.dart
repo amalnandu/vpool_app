@@ -274,6 +274,26 @@ class _QrTravellerState extends State<QrTraveller> {
                   size: 200.0,
                 ),
               ),
+              SizedBox(
+                height: 30,
+              ),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green[400],
+                    foregroundColor: Colors.white,
+                    shadowColor: Colors.grey,
+                    elevation: 8,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32.0)),
+                    minimumSize: Size(200, 50), //////// HERE
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('qr_scan');
+                  },
+                  child: Text(
+                    "Scan QR",
+                    style: GoogleFonts.poppins(fontSize: 16),
+                  ))
             ],
           ),
         )),
