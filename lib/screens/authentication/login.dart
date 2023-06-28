@@ -50,7 +50,10 @@ class _LoginState extends State<Login> {
                     end: Alignment.centerRight,
                     colors: <Color>[Colors.cyan, Colors.green])),
           ),
-          leading: BackButton(
+          leading: IconButton(
+            icon: Icon(
+              Icons.backspace,
+            ),
             onPressed: () {
               exit(0);
             },
@@ -71,10 +74,10 @@ class _LoginState extends State<Login> {
               //////////
               Container(
             padding: EdgeInsets.only(
-              left: MediaQuery.of(context).size.height / 70,
-              right: MediaQuery.of(context).size.height / 70,
-              top: MediaQuery.of(context).size.height / 100,
-            ),
+                // left: MediaQuery.of(context).size.height / 70,
+                // right: MediaQuery.of(context).size.height / 70,
+                // top: MediaQuery.of(context).size.height / 100,
+                ),
             child: Form(
               key: _formKey,
               child: Center(
@@ -88,15 +91,16 @@ class _LoginState extends State<Login> {
                       //const Expanded(flex:1,child: Text("Username",style: TextStyle(fontSize: 18.0,color: Colors.red),)),
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                          padding:
+                              EdgeInsets.fromLTRB(wd * 0.05, 5, wd * 0.05, 5),
                           child: Container(
                             // height: 50,
                             // width: wd * 0.5,
                             child: TextField(
                                 controller: username1,
                                 textAlign: TextAlign.center,
-                                decoration: InputDecoration(
-                                    hintText: 'Enter your username,',
+                                decoration: const InputDecoration(
+                                    hintText: 'Enter your email',
                                     border: OutlineInputBorder())),
                           ),
                         ),
@@ -109,7 +113,8 @@ class _LoginState extends State<Login> {
                       // Expanded(flex:1,child: Text("Password",style: TextStyle(fontSize: 18.0,color: Colors.red),)),
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                          padding:
+                              EdgeInsets.fromLTRB(wd * 0.05, 5, wd * 0.05, 5),
                           child: Container(
                             child: TextField(
                               textAlign: TextAlign.center,
@@ -184,9 +189,17 @@ class _LoginState extends State<Login> {
                             ))
                       ],
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
+                    // SizedBox(
+                    //   height: 5,
+                    // ),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('forgot_password');
+                        },
+                        child: Text(
+                          "Forgot password?",
+                          style: GoogleFonts.poppins(fontSize: 17),
+                        )),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(5, 10, 5, 5),
                       child: Image.asset(

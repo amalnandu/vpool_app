@@ -17,13 +17,14 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-
     return StreamProvider.value(
-      value: UserDatabaseService().users,
-    initialData: null,
-    child: UserSwitch(user: widget.user,)
-    );
-  }}
+        value: UserDatabaseService().users,
+        initialData: null,
+        child: UserSwitch(
+          user: widget.user,
+        ));
+  }
+}
 
 class UserSwitch extends StatefulWidget {
   const UserSwitch({required this.user});
@@ -36,24 +37,28 @@ class UserSwitch extends StatefulWidget {
 class _UserSwitchState extends State<UserSwitch> {
   @override
   Widget build(BuildContext context) {
-    String? userdesignation="";
-    final userlist = Provider.of<List<Travellers>?>(context)??[];
-    print("username="+widget.user.username);
-    print("length= "+ userlist.length.toString());
-    for(int i=0;i<userlist.length;i++){print(userlist[i].email);
-      if(userlist[i]?.email==widget.user.username){
-        userdesignation=userlist[i]?.isOwner;
+    String? userdesignation = "";
+    final userlist = Provider.of<List<Travellers>?>(context) ?? [];
+    print("username=" + widget.user.username);
+    print("length= " + userlist.length.toString());
+    for (int i = 0; i < userlist.length; i++) {
+      print(userlist[i].email);
+      if (userlist[i]?.email == widget.user.username) {
+        userdesignation = userlist[i]?.isOwner;
         print(userlist[i].username);
       }
     }
     print(userdesignation);
     if (userdesignation == '0') {
       return UserHome(user: widget.user);
-    } else if (userdesignation == '1'){
+    } else if (userdesignation == '1') {
       return OwnerHome(user: widget.user);
-    }else if (userdesignation == '2'){
+    } else if (userdesignation == '2') {
       return DualHome(user: widget.user);
     }
-    return Container(height: 1,child: CircularProgressIndicator(),);
+    return Container(
+      height: 1,
+      child: CircularProgressIndicator(),
+    );
   }
 }

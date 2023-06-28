@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '../../services/auth.dart';
 
 class Register extends StatefulWidget {
@@ -101,7 +103,7 @@ class _RegisterState extends State<Register> {
                       flex: 3,
                       child: TextField(
                         controller: username1,
-                        decoration: InputDecoration(hintText: 'username'),
+                        decoration: InputDecoration(hintText: 'Username'),
                       ),
                     ),
                   ]),
@@ -124,7 +126,7 @@ class _RegisterState extends State<Register> {
                         controller: email,
                         decoration: InputDecoration(hintText: 'Email id'),
                         validator: (val) =>
-                            val!.isEmpty ? "email cannot be empty" : null,
+                            val!.isEmpty ? "Email cannot be empty" : null,
                       ),
                     ),
                   ]),
@@ -148,7 +150,7 @@ class _RegisterState extends State<Register> {
                         decoration: InputDecoration(
                             hintText: 'Password',
                             errorText: validate
-                                ? "password must be atlest eight character long"
+                                ? "Password must be atlest eight character long"
                                 : ""),
                       ),
                     ),
@@ -191,7 +193,7 @@ class _RegisterState extends State<Register> {
                       flex: 3,
                       child: TextField(
                         controller: adhar,
-                        decoration: InputDecoration(hintText: 'Aadhaar'),
+                        decoration: InputDecoration(hintText: 'Aadhaar Number'),
                       ),
                     ),
                   ]),
@@ -209,7 +211,7 @@ class _RegisterState extends State<Register> {
                       width: 30,
                     ),
                     Expanded(
-                      flex: 2,
+                      flex: 3,
                       child: DropdownButton(
                         value: dropdownvalue,
                         icon: const Icon(Icons.keyboard_arrow_down),
@@ -241,9 +243,9 @@ class _RegisterState extends State<Register> {
                           Row(children: [
                             Expanded(
                                 flex: 1,
-                                child: Text(
-                                  "driving licence",
-                                  style: TextStyle(fontSize: 18.0),
+                                child: Icon(
+                                  Icons.numbers,
+                                  size: 40,
                                 )),
                             SizedBox(
                               width: 30,
@@ -253,7 +255,7 @@ class _RegisterState extends State<Register> {
                               child: TextField(
                                 controller: drl,
                                 decoration: InputDecoration(
-                                    hintText: 'driving licence'),
+                                    hintText: 'Driving licence No.'),
                               ),
                             ),
                           ]),
@@ -263,9 +265,9 @@ class _RegisterState extends State<Register> {
                           Row(children: [
                             Expanded(
                                 flex: 1,
-                                child: Text(
-                                  "vehicle number",
-                                  style: TextStyle(fontSize: 18.0),
+                                child: Icon(
+                                  Icons.numbers,
+                                  size: 40,
                                 )),
                             SizedBox(
                               width: 30,
@@ -275,7 +277,7 @@ class _RegisterState extends State<Register> {
                               child: TextField(
                                 controller: vno,
                                 decoration:
-                                    InputDecoration(hintText: 'vehicle number'),
+                                    InputDecoration(hintText: 'Vehicle number'),
                               ),
                             ),
                           ]),
@@ -285,9 +287,9 @@ class _RegisterState extends State<Register> {
                           Row(children: [
                             Expanded(
                                 flex: 1,
-                                child: Text(
-                                  "rc book",
-                                  style: TextStyle(fontSize: 18.0),
+                                child: Icon(
+                                  Icons.insert_drive_file,
+                                  size: 40,
                                 )),
                             SizedBox(
                               width: 30,
@@ -296,8 +298,7 @@ class _RegisterState extends State<Register> {
                               flex: 3,
                               child: TextField(
                                 controller: rcbook,
-                                decoration:
-                                    InputDecoration(hintText: 'rc book'),
+                                decoration: InputDecoration(hintText: 'RC id'),
                               ),
                             ),
                           ]),
@@ -313,10 +314,17 @@ class _RegisterState extends State<Register> {
                       onPressed: () async {
                         dynamic result;
                         //if(_formKey.currentState!.validate()){}
-                        if (passsord1.text.length < 8) {
+                        if (passsord1.text.length > 7) {
                           validate = true;
                         } else {
                           validate = false;
+                          showTopSnackBar(
+                            Overlay.of(context),
+                            const CustomSnackBar.error(
+                              message:
+                                  'Password must be have minimum 8 characters ',
+                            ),
+                          );
                           if (newval == 'owner') {
                             dynamic result =
                                 await _auth.registerWithEmailandPasswordowner(
@@ -339,18 +347,24 @@ class _RegisterState extends State<Register> {
                           } else {
                             dynamic result =
                                 await _auth.registerWithEmailandPassworddual(
-                                    email.text,
+                                    email.text.trim(),
                                     passsord1.text,
-                                    username1.text,
-                                    phno.text,
-                                    adhar.text,
-                                    drl.text,
-                                    rcbook.text,
-                                    vno.text);
+                                    username1.text.trim(),
+                                    phno.text.trim(),
+                                    adhar.text.trim(),
+                                    drl.text.trim(),
+                                    rcbook.text.trim(),
+                                    vno.text.trim());
                           }
                           if (result == null) {
                             setState(() {
-                              error = "register failed";
+                              error = "Registration failed";
+                              showTopSnackBar(
+                                Overlay.of(context),
+                                CustomSnackBar.error(
+                                  message: '$error',
+                                ),
+                              );
                             });
                           }
                         }
@@ -366,12 +380,19 @@ class _RegisterState extends State<Register> {
                       ),
                       child: Text(
                         'Register',
-                        style: GoogleFonts.poppins(fontSize: 20),
+                        style: GoogleFonts.poppins(fontSize: 18),
                       )),
                   SizedBox(
-                    height: 12,
+                    height: 20,
                   ),
-                  Text(error),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(5, 10, 5, 5),
+                    child: Image.asset(
+                      'assets/images/car_reg.jpg',
+                      fit: BoxFit.cover,
+                      height: 240.0,
+                    ),
+                  ),
                 ],
               ),
             )),

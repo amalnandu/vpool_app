@@ -247,7 +247,7 @@ class AllJourneyTravellerDatabaseService {
 
   Future updateDriverJStartData(String journeyid)async{
     return await _usercollection.doc(useremail).collection('journey').doc(journeyid).update(
-      {"isstart":"1",});
+        {"isstart":"1",});
   }
 
 }

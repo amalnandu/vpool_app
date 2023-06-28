@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../main.dart';
 import '../../../models/user.dart';
@@ -59,238 +58,196 @@ class _MySearchDataState extends State<MySearchData> {
       ];
     }
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Center(
-          child: Container(
-            // height: MediaQuery.of(context).size.height / 2,
-            child: SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 50,
+      body: Container(
+        height: MediaQuery.of(context).size.height / 2,
+        child: Column(
+          children: [
+            ListTile(
+              leading: Container(
+                width: MediaQuery.of(context).size.width / 1.3,
+                child: TextField(
+                  readOnly: true,
+                  controller: startLoc,
+                  decoration: InputDecoration(
+                    labelText: 'Start location',
+                    icon: IconButton(
+                      onPressed: () {
+                        // method to show the search bar
+                        showSearch(
+                            context: context,
+                            // delegate to customize the search bar
+                            delegate: CustomSearchDelegate(
+                                searchcont: startLoc, searchTerms: startlocat));
+                      },
+                      icon: const Icon(Icons.location_on_outlined),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                        leading: Container(
-                          width: MediaQuery.of(context).size.width / 1.3,
-                          child: TextField(
-                            readOnly: true,
-                            controller: startLoc,
-                            decoration: InputDecoration(
-                              labelText: 'Start location',
-                              icon: IconButton(
-                                onPressed: () {
-                                  // method to show the search bar
-                                  showSearch(
-                                      context: context,
-                                      // delegate to customize the search bar
-                                      delegate: CustomSearchDelegate(
-                                          searchcont: startLoc,
-                                          searchTerms: startlocat));
-                                },
-                                icon: const Icon(Icons.location_on_outlined),
-                              ),
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                        leading: Container(
-                          width: MediaQuery.of(context).size.width / 1.3,
-                          child: TextField(
-                            readOnly: true,
-                            controller: endLoc,
-                            decoration: InputDecoration(
-                              labelText: 'End location',
-                              icon: IconButton(
-                                onPressed: () {
-                                  // method to show the search bar
-                                  showSearch(
-                                      context: context,
-                                      // delegate to customize the search bar
-                                      delegate: CustomSearchDelegate(
-                                          searchcont: endLoc,
-                                          searchTerms: endlocat));
-                                },
-                                icon: Icon(Icons.location_city),
-                              ),
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                        leading: Container(
-                          decoration: BoxDecoration(
-                              //border: Border.all(color: Colors.black87)
-                              ),
-                          width: MediaQuery.of(context).size.width / 1.3,
-                          child: TextField(
-                            readOnly: true,
-                            controller: tdate,
-                            decoration: InputDecoration(
-                              labelText: 'Date',
-                              icon: IconButton(
-                                onPressed: () async {
-                                  await showDialog(
-                                      context: context,
-                                      builder: (_) {
-                                        return Dialog(
-                                          child: Calender(locctrl: tdate),
-                                        );
-                                      });
-                                  if (tdate.text != null)
-                                    print(tdate.text.split(' ').first);
-                                },
-                                icon: Icon(Icons.date_range),
-                              ),
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                        ),
-                        // trailing: Icon(Icons.date_range),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue[400],
-                          foregroundColor: Colors.white,
-                          shadowColor: Colors.grey,
-                          elevation: 8,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(32.0)),
-                          minimumSize: Size(200, 50), //////// HERE
-                        ),
-                        onPressed: () async {
-                          print(vis);
-                          searchlist = checker(journeylist);
-                          print(searchlist);
-                          setState(() {
-                            vis = true;
-                            print(vis);
-                          });
-                        },
-                        child: Text(
-                          'Search',
-                          style: GoogleFonts.poppins(fontSize: 22),
-                        )),
-                    Visibility(
-                        visible: vis,
-                        child: Container(
-                          height: MediaQuery.of(context).size.height / 10,
-                          child: ListView.builder(
-                            itemCount: searchlist.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return GestureDetector(
-                                child: Container(
-                                  padding: EdgeInsets.only(
-                                      top: 10, right: 20, bottom: 10),
-                                  height:
-                                      MediaQuery.of(context).size.height / 25,
-                                  child: Card(
-                                      child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text('journey'),
-                                          ),
-                                          Expanded(
-                                              flex: 2,
-                                              child: Text(searchlist[index]
-                                                  .startingloc)),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text('------->'),
-                                          ),
-                                          Expanded(
-                                              flex: 2,
-                                              child: Text(
-                                                  searchlist[index].endingloc))
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text('Time'),
-                                          ),
-                                          Expanded(
-                                              flex: 2,
-                                              child: Text(searchlist[index]
-                                                  .startingtime)),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text('-----to------'),
-                                          ),
-                                          Expanded(
-                                              flex: 2,
-                                              child: Text(
-                                                  searchlist[index].endingtime))
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text('Remaining setas'),
-                                          ),
-                                          Expanded(
-                                              flex: 1,
-                                              child: Text(
-                                                  searchlist[index].remseats)),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text('journey driver'),
-                                          ),
-                                          Expanded(
-                                              flex: 1,
-                                              child: Text(
-                                                  searchlist[index].email)),
-                                        ],
-                                      ),
-                                    ],
-                                  )),
-                                ),
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => SelectJourney(
-                                                user: widget.user,
-                                                selected: searchlist[index],
-                                              )));
-                                },
-                              );
-                            },
-                          ),
-                        )),
-                  ],
+                    border: OutlineInputBorder(),
+                  ),
                 ),
               ),
             ),
-          ),
+            ListTile(
+              leading: Container(
+                width: MediaQuery.of(context).size.width / 1.3,
+                child: TextField(
+                  readOnly: true,
+                  controller: endLoc,
+                  decoration: InputDecoration(
+                    labelText: 'End location',
+                    icon: IconButton(
+                      onPressed: () {
+                        // method to show the search bar
+                        showSearch(
+                            context: context,
+                            // delegate to customize the search bar
+                            delegate: CustomSearchDelegate(
+                                searchcont: endLoc, searchTerms: endlocat));
+                      },
+                      icon: Icon(Icons.location_city),
+                    ),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Container(
+                decoration: BoxDecoration(
+                    //border: Border.all(color: Colors.black87)
+                    ),
+                width: MediaQuery.of(context).size.width / 1.3,
+                child: TextField(
+                  readOnly: true,
+                  controller: tdate,
+                  decoration: InputDecoration(
+                    labelText: 'date',
+                    icon: IconButton(
+                      onPressed: () async {
+                        await showDialog(
+                            context: context,
+                            builder: (_) {
+                              return Dialog(
+                                child: Calender(locctrl: tdate),
+                              );
+                            });
+                        if (tdate.text != null)
+                          print(tdate.text.split(' ').first);
+                      },
+                      icon: Icon(Icons.date_range),
+                    ),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              // trailing: Icon(Icons.date_range),
+            ),
+            ElevatedButton(
+                onPressed: () async {
+                  print(vis);
+                  searchlist = checker(journeylist);
+                  print(searchlist);
+                  setState(() {
+                    vis = true;
+                    print(vis);
+                  });
+                },
+                child: Text('search')),
+            Visibility(
+                visible: vis,
+                child: Container(
+                  height: MediaQuery.of(context).size.height / 10,
+                  child: ListView.builder(
+                    itemCount: searchlist.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        child: Container(
+                          padding:
+                              EdgeInsets.only(top: 10, right: 20, bottom: 10),
+                          height: MediaQuery.of(context).size.height / 25,
+                          child: Card(
+                              child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text('journey'),
+                                  ),
+                                  Expanded(
+                                      flex: 3,
+                                      child:
+                                          Text(searchlist[index].startingloc)),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text('------->'),
+                                  ),
+                                  Expanded(
+                                      flex: 3,
+                                      child: Text(searchlist[index].endingloc))
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text('Time'),
+                                  ),
+                                  Expanded(
+                                      flex: 2,
+                                      child:
+                                          Text(searchlist[index].startingtime)),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text('-----to------'),
+                                  ),
+                                  Expanded(
+                                      flex: 2,
+                                      child: Text(searchlist[index].endingtime))
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text('Remaining setas'),
+                                  ),
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(searchlist[index].remseats)),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text('journey driver'),
+                                  ),
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(searchlist[index].email)),
+                                ],
+                              ),
+                            ],
+                          )),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SelectJourney(
+                                        user: widget.user,
+                                        selected: searchlist[index],
+                                      )));
+                        },
+                      );
+                    },
+                  ),
+                )),
+          ],
         ),
       ),
     );

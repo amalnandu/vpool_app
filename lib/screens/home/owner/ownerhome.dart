@@ -1,4 +1,3 @@
-
 import 'package:location/location.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled1/main.dart';
@@ -9,13 +8,9 @@ import 'package:untitled1/services/databaseService.dart';
 import '../../../models/user.dart';
 import '../../../services/auth.dart';
 
-
-
-
 class OwnerHome extends StatefulWidget {
   const OwnerHome({required this.user});
   final NewUser user;
-
 
   @override
   State<OwnerHome> createState() => _OwnerHomeState();
@@ -23,111 +18,120 @@ class OwnerHome extends StatefulWidget {
 
 class _OwnerHomeState extends State<OwnerHome> {
   int pageIndex = 0;
-  final AuthService _auth =AuthService();
+  final AuthService _auth = AuthService();
 
   @override
   void initState() {
-    super.initState();}
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final pages = [
-      DriverHome(),
+      //DriverHome(),
       OwnerSearch(user: widget.user),
       OwnerNotif(),
       OwnerBooking(user: widget.user),
     ];
     return Scaffold(
-
       appBar: AppBar(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
               bottomRight: Radius.circular(25),
               bottomLeft: Radius.circular(25)),
-        ), toolbarHeight: MediaQuery.of(context).size.height/15,
-        title: Center(child:
-        Text('V-Pool',style: TextStyle(
-            fontSize: 25,fontWeight:FontWeight.w900),)),
+        ),
+        toolbarHeight: MediaQuery.of(context).size.height / 15,
+        title: Center(
+            child: Text(
+          'V-Pool',
+          style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
+        )),
         backgroundColor: topcolor,
         centerTitle: true,
-        leading: BackButton(onPressed: (){
-          //Navigator.of(context).pushNamed(Login.id);
-        },),
+        leading: BackButton(
+          onPressed: () {
+            //Navigator.of(context).pushNamed(Login.id);
+          },
+        ),
         actions: [
-          PopupMenuButton(
-              itemBuilder: (context){
-                return [
-                  const PopupMenuItem<int>(
-                    value: 0,
-                    child: Text("My Account"),
-                  ),
-
-                  const PopupMenuItem<int>(
-                    value: 1,
-                    child: Text("Settings"),
-                  ),
-
-                  const PopupMenuItem<int>(
-                    value: 2,
-                    child: Text("Logout"),
-                  ),
-                ];
-              },
-              onSelected:(value)async{
-                if(value == 0){
-                  print("My account menu is selected.");
-                }else if(value == 1) {
-                  print("My settings menu is selected.");
-                }else if(value == 2){
-                  await _auth.signOut();                }
-              }
-          ),
+          PopupMenuButton(itemBuilder: (context) {
+            return [
+              const PopupMenuItem<int>(
+                value: 0,
+                child: Text("My Account"),
+              ),
+              const PopupMenuItem<int>(
+                value: 1,
+                child: Text("Settings"),
+              ),
+              const PopupMenuItem<int>(
+                value: 2,
+                child: Text("Logout"),
+              ),
+            ];
+          }, onSelected: (value) async {
+            if (value == 0) {
+              print("My account menu is selected.");
+            } else if (value == 1) {
+              print("My settings menu is selected.");
+            } else if (value == 2) {
+              await _auth.signOut();
+            }
+          }),
         ],
       ),
       body: Stack(
         children: [
-          Container(padding: EdgeInsets.only(left: MediaQuery.of(context).size.height/50,
-              right: MediaQuery.of(context).size.height/50),
-              height: MediaQuery.of(context).size.height,child: pages[pageIndex]),
-          Positioned(top: MediaQuery.of(context).size.height/1.25,
-              right: 5,left:5,child: buildMyNavBar(context)),
+          Container(
+              padding: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.height / 50,
+                  right: MediaQuery.of(context).size.height / 50),
+              height: MediaQuery.of(context).size.height,
+              child: pages[pageIndex]),
+          Positioned(
+              top: MediaQuery.of(context).size.height / 1.25,
+              right: 5,
+              left: 5,
+              child: buildMyNavBar(context)),
           // Positioned(top: MediaQuery.of(context).size.height/1.30,
           //     left: MediaQuery.of(context).size.width/2.35,
           //     child: FloatingActionButton.extended(onPressed: (){},
           //       label: Icon(Icons.person),elevation: 5,)),
         ],
-      ),floatingActionButton: FloatingActionButton(
-      onPressed: ()async{
-      Location location = new Location();
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          Location location = new Location();
 
-      bool _serviceEnabled;
-      PermissionStatus _permissionGranted;
-      LocationData _locationData;
+          bool _serviceEnabled;
+          PermissionStatus _permissionGranted;
+          LocationData _locationData;
 
-      _serviceEnabled = await location.serviceEnabled();
-      if (!_serviceEnabled) {
-        _serviceEnabled = await location.requestService();
-        if (!_serviceEnabled) {
-          return;
-        }
-      }
+          _serviceEnabled = await location.serviceEnabled();
+          if (!_serviceEnabled) {
+            _serviceEnabled = await location.requestService();
+            if (!_serviceEnabled) {
+              return;
+            }
+          }
 
-      _permissionGranted = await location.hasPermission();
-      if (_permissionGranted == PermissionStatus.denied) {
-        _permissionGranted = await location.requestPermission();
-        if (_permissionGranted != PermissionStatus.granted) {
-          return;
-        }
-      }
+          _permissionGranted = await location.hasPermission();
+          if (_permissionGranted == PermissionStatus.denied) {
+            _permissionGranted = await location.requestPermission();
+            if (_permissionGranted != PermissionStatus.granted) {
+              return;
+            }
+          }
 
-      _locationData = await location.getLocation();
-      double? latx = _locationData.latitude;
-      double? longx = _locationData.longitude;
-      print(latx!);
-      print(longx!);
-      location.enableBackgroundMode(enable: true);
-    },child: Icon(Icons.location_on_outlined),
-    ),
+          _locationData = await location.getLocation();
+          double? latx = _locationData.latitude;
+          double? longx = _locationData.longitude;
+          print(latx!);
+          print(longx!);
+          location.enableBackgroundMode(enable: true);
+        },
+        child: Icon(Icons.location_on_outlined),
+      ),
     );
   }
 
@@ -144,30 +148,30 @@ class _OwnerHomeState extends State<OwnerHome> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Column(
-              children:[
-                IconButton(
-                  enableFeedback: false,
-                  onPressed: () {
-                    setState(() {
-                      pageIndex = 0;
-                    });
-                  },
-                  icon: pageIndex == 0
-                      ? const Icon(
-                    Icons.home_filled,
-                    color: Colors.white,
-                    size: 35,
-                  )
-                      : const Icon(
-                    Icons.home_outlined,
-                    color: Colors.white,
-                    size: 35,
-                  ),
-                ),
-                const Text("Home")
-              ]),
-          Column(children:[
+          Column(children: [
+            IconButton(
+              enableFeedback: false,
+              onPressed: () {
+                print("hi");
+                setState(() {
+                  pageIndex = 0;
+                });
+              },
+              icon: pageIndex == 0
+                  ? const Icon(
+                      Icons.home_filled,
+                      color: Colors.white,
+                      size: 35,
+                    )
+                  : const Icon(
+                      Icons.home_outlined,
+                      color: Colors.white,
+                      size: 35,
+                    ),
+            ),
+            const Text("Home")
+          ]),
+          Column(children: [
             IconButton(
               enableFeedback: false,
               onPressed: () {
@@ -177,16 +181,18 @@ class _OwnerHomeState extends State<OwnerHome> {
               },
               icon: pageIndex == 1
                   ? const Icon(
-                Icons.search,
-                color: Colors.white,
-                size: 35,
-              )
+                      Icons.search,
+                      color: Colors.white,
+                      size: 35,
+                    )
                   : const Icon(
-                Icons.search_outlined,
-                color: Colors.white,
-                size: 35,
-              ),
-            ),const Text('Search')]),
+                      Icons.search_outlined,
+                      color: Colors.white,
+                      size: 35,
+                    ),
+            ),
+            const Text('Search')
+          ]),
           // Column(children:[
           //   IconButton(
           //     enableFeedback: false,
@@ -207,7 +213,7 @@ class _OwnerHomeState extends State<OwnerHome> {
           //       size: 35,
           //     ),
           //   ),const Text('')]),
-          Column(children:[
+          Column(children: [
             IconButton(
               enableFeedback: false,
               onPressed: () {
@@ -217,17 +223,19 @@ class _OwnerHomeState extends State<OwnerHome> {
               },
               icon: pageIndex == 2
                   ? const Icon(
-                Icons.notifications_active,
-                color: Colors.white,
-                size: 35,
-              )
+                      Icons.notifications_active,
+                      color: Colors.white,
+                      size: 35,
+                    )
                   : const Icon(
-                Icons.notifications_active_outlined,
-                color: Colors.white,
-                size: 35,
-              ),
-            ),const Text('Notification')]),
-          Column(children:[
+                      Icons.notifications_active_outlined,
+                      color: Colors.white,
+                      size: 35,
+                    ),
+            ),
+            const Text('Notification')
+          ]),
+          Column(children: [
             IconButton(
               enableFeedback: false,
               onPressed: () {
@@ -237,16 +245,18 @@ class _OwnerHomeState extends State<OwnerHome> {
               },
               icon: pageIndex == 3
                   ? const Icon(
-                Icons.person_2,
-                color: Colors.white,
-                size: 35,
-              )
+                      Icons.person_2,
+                      color: Colors.white,
+                      size: 35,
+                    )
                   : const Icon(
-                Icons.person_2_outlined,
-                color: Colors.white,
-                size: 35,
-              ),
-            ),const Text('Profile')]),
+                      Icons.person_2_outlined,
+                      color: Colors.white,
+                      size: 35,
+                    ),
+            ),
+            const Text('Profile')
+          ]),
         ],
       ),
     );
@@ -264,7 +274,7 @@ class _DriverHomeState extends State<DriverHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text('WILL BE UPDATED SOON'),
+      body: Text('WILL BE UPDATED SOON '),
     );
   }
 }

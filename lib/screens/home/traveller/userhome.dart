@@ -9,6 +9,7 @@ import 'package:untitled1/screens/home/traveller/usersearchresult.dart';
 import '../../../models/user.dart';
 import '../../../services/auth.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:untitled1/models/components.dart';
 
 class UserHome extends StatefulWidget {
   const UserHome({required this.user});
@@ -38,44 +39,26 @@ class _UserHomeState extends State<UserHome> {
 
     return Scaffold(
       appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.grey, // shadow color
-                    blurRadius: 20, // shadow radius
-                    offset: Offset(5, 5), // shadow offset
-                    spreadRadius:
-                        0.1, // The amount the box should be inflated prior to applying the blur
-                    blurStyle: BlurStyle.normal // set blur style
-                    ),
-              ],
-              borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(30),
-                  bottomLeft: Radius.circular(30)),
-              gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: <Color>[Colors.cyan, Colors.green])),
-        ),
+        flexibleSpace: Appbarstylining(),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(30),
-              bottomLeft: Radius.circular(30)),
+              bottomRight: Radius.circular(25),
+              bottomLeft: Radius.circular(25)),
         ),
-        toolbarHeight: MediaQuery.of(context).size.height / 15,
+        // toolbarHeight: MediaQuery.of(context).size.height / 15,
         title: Center(
             child: Text(
-          'V-Pool',
+          'Vpool',
           style: GoogleFonts.poppins(fontSize: 24),
         )),
         backgroundColor: Colors.white,
+        elevation: 0,
         centerTitle: true,
-        leading: BackButton(
-          onPressed: () {
-            //Navigator.of(context).pushNamed(Login.id);
-          },
-        ),
+        // leading: BackButton(
+        //   onPressed: () {
+        //     //Navigator.of(context).pushNamed(Login.id);
+        //   },
+        // ),
         actions: [
           PopupMenuButton(itemBuilder: (context) {
             return [
@@ -85,7 +68,7 @@ class _UserHomeState extends State<UserHome> {
               ),
               const PopupMenuItem<int>(
                 value: 1,
-                child: Text("my qr"),
+                child: Text("My QR"),
               ),
               const PopupMenuItem<int>(
                 value: 2,
@@ -111,8 +94,8 @@ class _UserHomeState extends State<UserHome> {
         children: [
           Container(
               padding: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.height / 50,
-                  right: MediaQuery.of(context).size.height / 50),
+                  left: MediaQuery.of(context).size.height / 40,
+                  right: MediaQuery.of(context).size.height / 40),
               height: MediaQuery.of(context).size.height,
               child: pages[pageIndex]),
           Positioned(
@@ -130,23 +113,13 @@ class _UserHomeState extends State<UserHome> {
   Container buildMyNavBar(BuildContext context) {
     return Container(
       height: 80,
-      decoration: const BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black54, // shadow color
-                blurRadius: 20, // shadow radius
-                offset: Offset(5, 5), // shadow offset
-                spreadRadius:
-                    0.1, // The amount the box should be inflated prior to applying the blur
-                blurStyle: BlurStyle.normal // set blur style
-                ),
-          ],
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-          gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.topLeft,
-              colors: <Color>[Colors.cyan, Colors.green])),
+      decoration: BoxDecoration(
+        color: bottomColor,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -275,11 +248,35 @@ class QrTraveller extends StatefulWidget {
 class _QrTravellerState extends State<QrTraveller> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: QrImageView(
-        data: widget.user.username,
-        version: QrVersions.auto,
-        size: MediaQuery.of(context).devicePixelRatio,
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        flexibleSpace: Appbarstylining(),
+        title: Text(
+          "My QR",
+          style: GoogleFonts.poppins(fontSize: 24),
+        ),
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+            child: Center(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 80,
+              ),
+              Container(
+                child: QrImageView(
+                  data: widget.user.username,
+                  version: QrVersions.auto,
+                  size: 200.0,
+                ),
+              ),
+            ],
+          ),
+        )),
       ),
     );
   }
